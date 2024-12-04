@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "CommonJS",
+    "outDir": "./dist",
+    "rootDir": ".",
+    "strict": true,
+    "typeRoots": ["node_modules/@types", "types", "nginx"],
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": [
+    "./**/*.ts",
+    "tests/**/*.ts",
+    "types/**/*.d.ts",
+    "nginx/**/*.conf"
+  ],
+  "exclude": ["node_modules"]
+}
