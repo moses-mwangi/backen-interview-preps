@@ -8,6 +8,8 @@ import cors from "cors";
 
 import csurlfRouter from "./routes/csurlfRoute";
 import userRouter from "./routes/userRoute";
+import userPostRouter from "./routes/userPostgressRoute";
+import userPrismaRouter from "./routes/userPrsimaRoute";
 
 import appError from "./utils/appError";
 
@@ -68,6 +70,8 @@ app.use((req, res, next) => {
 app.use("/api/getCsrfToken", csurlfRouter);
 
 app.use("/api/user", userRouter);
+app.use("/api/postUser", userPostRouter);
+app.use("/api/prismaUser", userPrismaRouter);
 
 app.all("*", (req, res, next) => {
   next(new appError(`Cant find ${req.url} on this server`, 404));
@@ -79,6 +83,7 @@ app.use((err: appError, req: Request, res: Response, next: NextFunction) => {
   res.status(statusCode).json({
     status: `${statusCode}`.startsWith("4") ? "Fail" : "Error",
     message: err.isOperational ? err.message : "Internal Server Error",
+    msg: err,
   });
 });
 

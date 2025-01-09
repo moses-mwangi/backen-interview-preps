@@ -2,7 +2,8 @@ import app from "./app";
 import dotenv from "dotenv";
 import os from "os";
 import cluster from "cluster";
-import { error } from "console";
+import { sequelize } from "./utils/postgress_db";
+import mongoose from "mongoose";
 
 dotenv.config({ path: ".env" });
 
@@ -11,9 +12,27 @@ process.on("uncaughtException", (err) => {
   console.error(err.name, err.message);
   process.exit(1);
 });
-// console.log(gg);
-const numCPUs = os.cpus().length;
+// const db = String(process.env.MD_DATABASE_URL);
 
+// mongoose
+//   .connect(db)
+//   .then(() => console.log("Database has succesfully connected"))
+//   .catch((err: Error) => console.error(db, err.name, err.message));
+
+const connectDb = async () => {
+  try {
+    await sequelize.authenticate();
+    console.log("Database has succesfully connected");
+    await sequelize.sync({ force: false });
+    console.log("Models synchronized");
+  } catch (err) {
+    console.error("Unable to connect to Database", err);
+  }
+};
+
+connectDb();
+
+const numCPUs = os.cpus().length;
 if (cluster.isPrimary) {
   console.log(`Primary process ${process.pid} is running`);
 
